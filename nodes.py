@@ -1234,7 +1234,7 @@ class LatentStats:
     FUNCTION = "notify"
     OUTPUT_NODE = True
 
-    CATEGORY = "utils"
+    # CATEGORY = "utils"
 
     def notify(self, latent):
         latents = latent["samples"]
@@ -1838,7 +1838,7 @@ class PrintSigmas:
     RETURN_TYPES = ("SIGMAS",)
     FUNCTION = "notify"
     OUTPUT_NODE = True
-    CATEGORY = "utils"
+    # CATEGORY = "utils"
     
     def notify(self, sigmas):
         print(sigmas)
@@ -1852,7 +1852,7 @@ class VisualizeLatents:
     RETURN_TYPES = ("IMAGE",)
     FUNCTION = "visualize"
 
-    CATEGORY = "utils"
+    # CATEGORY = "utils"
 
     def visualize(self, latent):
         latents = latent["samples"]
@@ -1973,7 +1973,7 @@ class ModelTest:
     RETURN_TYPES = ()
     FUNCTION = "test"
     OUTPUT_NODE = True
-    CATEGORY = "utils"
+    # CATEGORY = "utils"
     
     def test(self, model, code):
         exec(code)
