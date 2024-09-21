@@ -12,7 +12,6 @@ except ImportError:
     print("\033[33mUnable to import guidedFilter, make sure you have only opencv-contrib-python or run the import_error_install.bat script\033[m")
 
 import comfy.model_management
-from comfy.utils import ProgressBar
 from comfy_extras.nodes_post_processing import gaussian_kernel
 from .raft import *
 
@@ -1651,15 +1650,16 @@ class UnJitterImage:
         t = images.detach().clone().movedim(-1,1) # [B x C x H x W]
         
         if oflow_align:
-            pbar = ProgressBar(t.shape[0] // 9)
+            total_batches = t.shape[0] // 9
             raft_model, raft_device = load_raft()
             batch = []
-            for i in trange(t.shape[0] // 9):
+            for i in range(total_batches):
+                if i % 10 == 0:  # Print progress every 10 batches
+                    print(f"Processing batch {i+1}/{total_batches}")
                 batch1 = t[i*9].unsqueeze(0).repeat(9,1,1,1)
                 batch2 = t[i*9:i*9+9]
                 flows = raft_flow(raft_model, raft_device, batch1, batch2)
                 batch.append(flows)
-                pbar.update(1)
             flows = torch.cat(batch, dim=0)
             t = flow_warp(t, flows)
         else:
